@@ -56,7 +56,7 @@ public class CalculateSales {
 				br.close() ;
 			} catch (IOException e) {
 				// TODO 自動生成された catch ブロック
-				e.printStackTrace();
+				System.out.println("予期せぬエラーが発生しました") ;
 			}
 		}
 
@@ -92,7 +92,7 @@ public class CalculateSales {
 				brf.close() ;
 			} catch (IOException e) {
 				// TODO 自動生成された catch ブロック
-				e.printStackTrace();
+				System.out.println("予期せぬエラーが発生しました") ;
 			}
 		}
 
@@ -108,11 +108,11 @@ public class CalculateSales {
 			File[] files = file.listFiles();
 
 			for (int i = 0; i < files.length; i++ ) {
-				//filesの中身がファイルかディレクトリかで分ける
 				if (files[i].isFile()) {
 					if (files[i].getName().matches("\\d{8}.rcd")) {
 						rcdFile.add(files[i]);
 						}
+				//filesの中身がファイルかディレクトリかで分ける
 				} else if (files[i].isDirectory()) {
 					System.out.println("予期せぬエラーが発生しました");
 				}
@@ -178,7 +178,7 @@ public class CalculateSales {
 				buffer.close();
 			} catch (IOException e) {
 				// TODO 自動生成された catch ブロック
-				e.printStackTrace();
+				System.out.println("予期せぬエラーが発生しました") ;
 			}
 		}
 
@@ -193,15 +193,11 @@ public class CalculateSales {
 				return ((Long)entry2.getValue()).compareTo((Long)entry1.getValue()) ;
 			}
 		});
-		//並び替えの内容を表示
-		for(Entry<String,Long>bm : bmList) {
-//			//コード、支店名、金額
-//			System.out.println(bm.getKey() + "," + branchNameMap.get(bm.getKey()) + ","+ bm.getValue()) ;
-		}
+
 		BufferedWriter bw = null;
 		//ファイルへの出力
 		try {
-			File file = new File (args[0],"支店別集計ファイル") ;
+			File file = new File (args[0],"branch.out") ;
 			FileWriter fw = new FileWriter (file) ;
 			bw = new BufferedWriter (fw) ;
 			for (Entry<String,Long>bm : bmList){
@@ -214,7 +210,7 @@ public class CalculateSales {
 				bw.close();
 			} catch (IOException e) {
 				// TODO 自動生成された catch ブロック
-				e.printStackTrace();
+				System.out.println("予期せぬエラーが発生しました") ;
 			}
 		}
 
@@ -229,15 +225,10 @@ public class CalculateSales {
 				return ((Long)entry2.getValue()).compareTo((Long)entry1.getValue()) ;
 			}
 		});
-		//並び替えの内容を表示
-		for(Entry<String,Long>cm : cmList) {
-//			//コード、支店名、金額
-//			System.out.println(cm.getKey() + "," + commodityNameMap.get(cm.getKey()) + ","+ cm.getValue()) ;
-		}
 		BufferedWriter bwc = null;
 		//ファイルへの出力
 		try {
-			File file = new File (args[0],"商品別集計ファイル") ;
+			File file = new File (args[0],"commodity.out") ;
 			FileWriter fw = new FileWriter (file) ;
 			bwc = new BufferedWriter (fw) ;
 			for (Entry<String,Long>cm : cmList){
@@ -250,14 +241,8 @@ public class CalculateSales {
 				bwc.close();
 			} catch (IOException e) {
 				// TODO 自動生成された catch ブロック
-				e.printStackTrace();
+				System.out.println("予期せぬエラーが発生しました") ;
 			}
 		}
-
-	}
-
-	private static char[] commodityNameMap(String string, String string2) {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
 	}
 }
