@@ -203,6 +203,7 @@ public class CalculateSales {
 			for (Entry<String,Long>bm : bmList){
 				bw.write((bm.getKey() + "," + branchNameMap.get(bm.getKey()) + ","+ bm.getValue()) + System.getProperty("line.separator")) ;
 			}
+
 		} catch (IOException e) {
 			System.out.println("予期せぬエラーが発生しました") ;
 		} finally {
