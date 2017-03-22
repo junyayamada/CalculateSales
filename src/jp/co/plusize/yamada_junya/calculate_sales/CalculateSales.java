@@ -39,12 +39,10 @@ public class CalculateSales {
 
 		String fileInputPath = args[0] + File.separator + "branch.lst";
 		if(!fileRead(fileInputPath,"支店","\\d{3}",branchNameMap, branchMoneyMap)){
-			System.out.println("メソッド分け①でエラー");
 			return ;
 		}
 		fileInputPath = args[0] + File.separator + "commodity.lst";
 		if(!fileRead(fileInputPath,"商品","\\w{8}",commodityNameMap, commodityMoneyMap )){
-			System.out.println("メソッド分け②でエラー");
 			return ;
 		}
 
@@ -57,16 +55,19 @@ public class CalculateSales {
 			File[] files = file.listFiles();
 			for (int i = 0; i < files.length; i++ ) {
 				if (files[i].isFile()) {
-					if (files[i].getName().matches("\\d{8}.rcd")) {
+					if (files[i].getName().matches("^\\d{8}.rcd$")) {
 						rcdFile.add(files[i]);
-						}
-				} else if (!files[i].isFile()) {
-					System.out.println("予期せぬエラーが発生しました");
+					}
 				}
 			}
+
 			//連番確認
-			for (int i = 0; i < rcdFile.size(); i++) {
-				if (rcdFile.get(i) == null){
+			for (int i = 0; i < rcdFile.size()-1; i++) {
+				String str1st = rcdFile.get(i).getName().substring(0,8);
+				String str2nd = rcdFile.get(i+1).getName().substring(0,8);
+				int Number1st = Integer.parseInt(str1st);
+				int Number2nd = Integer.parseInt(str2nd);
+				if (Number2nd - Number1st != 1) {
 					System.out.println("売上ファイル名が連番になっていません");
 					return;
 				}
@@ -119,24 +120,21 @@ public class CalculateSales {
 		} catch(IOException e) {
 			System.out.println("予期せぬエラーが発生しました");
 		} finally {
-			try {
-				buffer.close();
-			} catch (IOException e) {
-				// TODO 自動生成された catch ブロック
-				System.out.println("予期せぬエラーが発生しました") ;
-			}
 		}
 
 		String fileOutputPath = args[0] + File.separator + "branch.out";
 		if(!fileOutput(fileOutputPath,branchNameMap, branchMoneyMap)){
-			System.out.println("メソッド分け③でエラー");
 			return ;
 		}
 		fileOutputPath = args[0] + File.separator + "commodity.out";
 		if(!fileOutput(fileOutputPath,commodityNameMap, commodityMoneyMap )){
-			System.out.println("メソッド分け④でエラー");
 			return ;
 		}
+	}
+
+	private static char[] rcdFile(int i) {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
 	}
 
 	//lstファイルの読込み
