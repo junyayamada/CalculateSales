@@ -47,8 +47,9 @@ public class CalculateSales {
 		}
 
 
+		//集計
 		BufferedReader buffer= null ;
-		ArrayList<File> rcdFile = new ArrayList<File>();
+		ArrayList<File> rcdList = new ArrayList<File>();
 		try {
 			//ファイル名の検索
 			File file = new File(args[0]);
@@ -56,15 +57,15 @@ public class CalculateSales {
 			for (int i = 0; i < files.length; i++ ) {
 				if (files[i].isFile()) {
 					if (files[i].getName().matches("^\\d{8}.rcd$")) {
-						rcdFile.add(files[i]);
+						rcdList.add(files[i]);
 					}
 				}
 			}
 
 			//連番確認
-			for (int i = 0; i < rcdFile.size()-1; i++) {
-				String str1st = rcdFile.get(i).getName().substring(0,8);
-				String str2nd = rcdFile.get(i+1).getName().substring(0,8);
+			for (int i = 0; i < rcdList.size()-1; i++) {
+				String str1st = rcdList.get(i).getName().substring(0,8);
+				String str2nd = rcdList.get(i+1).getName().substring(0,8);
 				int Number1st = Integer.parseInt(str1st);
 				int Number2nd = Integer.parseInt(str2nd);
 				if (Number2nd - Number1st != 1) {
@@ -73,44 +74,63 @@ public class CalculateSales {
 				}
 			}
 
-			for (int i = 0 ; i < rcdFile.size() ; i++ ) {
+			//売上ファイルの中身のチェック
+			for (int i = 0 ; i < rcdList.size() ; i++ ) {
 				try {
 					FileReader fr;
-					fr = new FileReader (rcdFile.get(i));
+					fr = new FileReader (rcdList.get(i));
 					buffer = new BufferedReader (fr);
 					String s ;
-					//rcdFileのString型を、readFileとして宣言
-					ArrayList<String> readFile = new ArrayList<String>();
+					ArrayList<String> fileReadList = new ArrayList<String>();
 					while((s = buffer.readLine()) != null) {
-						readFile.add(s);
+						fileReadList.add(s);
 					}
-					//売上ファイルの中身が4行以上ある場合
-					if (readFile.size() != 3) {
-						System.out.println("<該当ファイル名>のフォーマットが不正です");
+					//売上ファイルの中身が3行以外の場合
+					if (fileReadList.size() != 3) {
+						System.out.println(rcdList.get(i).getName() + "のフォーマットが不正です");
 						return;
 					}
-					//Long型のmapValueに代入、Mapの金額を入れる、Map.get(File.get)
-					Long mapValue = branchMoneyMap.get(readFile.get(0));
-					//Long型のreadValueに代入
-					Long readValue = Long.parseLong(readFile.get(2));
-
-					//支店または商品に該当がなかった場合
-					if (mapValue == null || readValue == null) {
-						System.out.println("<該当ファイル名>の支店コードが不正です");
+					//売上ファイルの支店コードがない場合
+					if (!branchNameMap.containsKey(fileReadList.get(0))) {
+						System.out.println(rcdList.get(i).getName() + "の支店コードが不正です");
+						return;
+					}
+					//売上ファイルの商品コードがない場合
+					if (!commodityNameMap.containsKey(fileReadList.get(1))) {
+						System.out.println(rcdList.get(i).getName() + "の支店コードが不正です");
 						return;
 					}
 
-					//Long型の変数 = Long + Long
-					Long Value = mapValue + readValue;
+					//キーをfileReadList.get(0)として支店コードから支店定義ファイルの金額を呼び出し
+					Long branchMapValue = branchMoneyMap.get(fileReadList.get(0));
+					//キーをfileReadList.get(1)として商品コードから商品定義ファイルの金額を呼び出し
+					Long commodityMapValue = commodityMoneyMap.get(fileReadList.get(1));
+					//fileReadList.get(2)の金額をLong型に変換
+					Long readValue = Long.parseLong(fileReadList.get(2));
+
+//					//支店または商品に該当がなかった場合
+//					if (mapValue == null || readValue == null) {
+//						System.out.println("<該当ファイル名>の支店コードが不正です");
+//						return;
+//					}
+
+					Long branchValue = branchMapValue + readValue;
+					Long commodityValue = commodityMapValue + readValue;
 
 					//合計金額が10桁を超えた場合
-					if (String.valueOf(Value).length() > 10) {
+					if (String.valueOf(branchValue).length() > 10) {
+						System.out.println("合計金額が10桁を超えました");
+						return;
+					}
+					if (String.valueOf(commodityValue).length() > 10) {
 						System.out.println("合計金額が10桁を超えました");
 						return;
 					}
 
 					//MoneyMapにキーとバリューをセットで戻す
-					branchMoneyMap.put(readFile.get(0),Value);
+					branchMoneyMap.put(fileReadList.get(0),branchValue);
+					commodityMoneyMap.put(fileReadList.get(0),commodityValue);
+
 				} catch(IOException e) {
 					System.out.println("予期せぬエラーが発生しました");
 				} finally {
@@ -152,14 +172,14 @@ public class CalculateSales {
     		while ((s = br.readLine()) != null) {
     			String[] str = s.split(",") ;
     			if(!str[0].matches(pattern)){
-    				System.out.println(fileName + "定義ファイルのフォーマットが不正です①");
+    				System.out.println(fileName + "定義ファイルのフォーマットが不正です1");
     				return false;
     			}
 	    		nameMap.put(str[0],str[1]);
 	    		moneyMap.put(str[0],0L);
     		}
      	} catch (IOException e) {
-       		 System.out.println (fileName + "定義ファイルのフォーマットが不正です②") ;
+       		 System.out.println (fileName + "定義ファイルのフォーマットが不正です2") ;
        	} finally {
        		try {
        			br.close() ;
