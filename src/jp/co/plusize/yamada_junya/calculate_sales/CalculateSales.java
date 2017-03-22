@@ -23,6 +23,7 @@ import java.util.Map.Entry;
 
 public class CalculateSales {
 
+
 	public static void main(String[] args) {
 
 		HashMap<String,String> branchNameMap = new HashMap<String,String>() ;
@@ -31,6 +32,10 @@ public class CalculateSales {
 		HashMap<String,String> commodityNameMap = new HashMap<String,String>() ;
 		HashMap<String,Long> commodityMoneyMap = new HashMap<String,Long>() ;
 
+		if(args.length != 1){
+			System.out.println("予期せぬエラーが発生しました");
+			return;
+		}
 
 		String fileInputPath = args[0] + File.separator + "branch.lst";
 		if(!fileRead(fileInputPath,"支店","\\d{3}",branchNameMap, branchMoneyMap)){
@@ -38,7 +43,7 @@ public class CalculateSales {
 			return ;
 		}
 		fileInputPath = args[0] + File.separator + "commodity.lst";
-		if(!fileRead(fileInputPath,"商品","\\w{}",commodityNameMap, commodityMoneyMap )){
+		if(!fileRead(fileInputPath,"商品","\\w{8}",commodityNameMap, commodityMoneyMap )){
 			System.out.println("メソッド分け②でエラー");
 			return ;
 		}
