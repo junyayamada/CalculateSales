@@ -97,7 +97,7 @@ public class CalculateSales {
 					}
 					//売上ファイルの商品コードがない場合
 					if (!commodityNameMap.containsKey(fileReadList.get(1))) {
-						System.out.println(rcdList.get(i).getName() + "の支店コードが不正です");
+						System.out.println(rcdList.get(i).getName() + "の商品コードが不正です");
 						return;
 					}
 
@@ -129,7 +129,7 @@ public class CalculateSales {
 
 					//MoneyMapにキーとバリューをセットで戻す
 					branchMoneyMap.put(fileReadList.get(0),branchValue);
-					commodityMoneyMap.put(fileReadList.get(0),commodityValue);
+					commodityMoneyMap.put(fileReadList.get(1),commodityValue);
 
 				} catch(IOException e) {
 					System.out.println("予期せぬエラーが発生しました");
@@ -172,20 +172,23 @@ public class CalculateSales {
     		while ((s = br.readLine()) != null) {
     			String[] str = s.split(",") ;
     			if(!str[0].matches(pattern)){
-    				System.out.println(fileName + "定義ファイルのフォーマットが不正です1");
+    				System.out.println(fileName + "定義ファイルのフォーマットが不正です");
     				return false;
     			}
 	    		nameMap.put(str[0],str[1]);
 	    		moneyMap.put(str[0],0L);
     		}
      	} catch (IOException e) {
-       		 System.out.println (fileName + "定義ファイルのフォーマットが不正です2") ;
+       		 System.out.println (fileName + "定義ファイルのフォーマットが不正です") ;
        	} finally {
        		try {
-       			br.close() ;
+       			if (br != null) {
+       				br.close() ;
+       			}
        		} catch (IOException e) {
       			// TODO 自動生成された catch ブロック
        			System.out.println("予期せぬエラーが発生しました") ;
+       			return false;
        		}
        	}
 		return true;
@@ -215,7 +218,9 @@ public class CalculateSales {
 			return false;
 		} finally {
 			try {
-				bwc.close();
+				if (bwc != null) {
+					bwc.close();
+				}
 			} catch (IOException e) {
 				// TODO 自動生成された catch ブロック
 				System.out.println("予期せぬエラーが発生しました") ;
