@@ -74,7 +74,7 @@ public class CalculateSales {
 				}
 			}
 
-			//売上ファイルの中身のチェック
+			//売上ファイルの読込みと、中身のチェック
 			for (int i = 0 ; i < rcdList.size() ; i++ ) {
 				try {
 					FileReader fr;
@@ -105,6 +105,13 @@ public class CalculateSales {
 					Long branchMapValue = branchMoneyMap.get(fileReadList.get(0));
 					//キーをfileReadList.get(1)として商品コードから商品定義ファイルの金額を呼び出し
 					Long commodityMapValue = commodityMoneyMap.get(fileReadList.get(1));
+
+					//売上ファイルの金額が数値でない場合
+					if (fileReadList.get(2) == "^[0-9]*$") {
+						System.out.println(rcdList.get(i).getName() + "のフォーマットが不正です");
+						return ;
+					}
+
 					//fileReadList.get(2)の金額をLong型に変換
 					Long readValue = Long.parseLong(fileReadList.get(2));
 
@@ -171,7 +178,11 @@ public class CalculateSales {
     		String s ;
     		while ((s = br.readLine()) != null) {
     			String[] str = s.split(",") ;
-    			if(!str[0].matches(pattern)){
+    			if (str.length != 2) {
+    				System.out.println(fileName + "定義ファイルのフォーマットが不正です");
+    				return false;
+    			}
+    			if (!str[0].matches(pattern)) {
     				System.out.println(fileName + "定義ファイルのフォーマットが不正です");
     				return false;
     			}
@@ -179,7 +190,7 @@ public class CalculateSales {
 	    		moneyMap.put(str[0],0L);
     		}
      	} catch (IOException e) {
-       		 System.out.println (fileName + "定義ファイルのフォーマットが不正です") ;
+       		 System.out.println (fileName + "定義ファイルのフォーマットが不正です");
        	} finally {
        		try {
        			if (br != null) {
