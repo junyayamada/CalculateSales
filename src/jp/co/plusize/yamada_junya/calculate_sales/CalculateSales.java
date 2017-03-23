@@ -100,17 +100,16 @@ public class CalculateSales {
 						System.out.println(rcdList.get(i).getName() + "の商品コードが不正です");
 						return;
 					}
-
-					//キーをfileReadList.get(0)として支店コードから支店定義ファイルの金額を呼び出し
-					Long branchMapValue = branchMoneyMap.get(fileReadList.get(0));
-					//キーをfileReadList.get(1)として商品コードから商品定義ファイルの金額を呼び出し
-					Long commodityMapValue = commodityMoneyMap.get(fileReadList.get(1));
-
 					//売上ファイルの金額が数値でない場合
-					if (fileReadList.get(2) == "^[0-9]*$") {
+					if (fileReadList.get(2).matches("^[0-9]*$")) {
 						System.out.println(rcdList.get(i).getName() + "のフォーマットが不正です");
 						return ;
 					}
+
+					//キーをfileReadList.get(0)として、支店コードから支店定義ファイルの金額を呼び出し
+					Long branchMapValue = branchMoneyMap.get(fileReadList.get(0));
+					//キーをfileReadList.get(1)として、商品コードから商品定義ファイルの金額を呼び出し
+					Long commodityMapValue = commodityMoneyMap.get(fileReadList.get(1));
 
 					//fileReadList.get(2)の金額をLong型に変換
 					Long readValue = Long.parseLong(fileReadList.get(2));
