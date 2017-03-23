@@ -1,10 +1,3 @@
-/**
- *
- */
-/**
- * @author trainee158
- *
- */
 package jp.co.plusize.yamada_junya.calculate_sales;
 
 import java.io.BufferedReader;
@@ -113,12 +106,6 @@ public class CalculateSales {
 
 					//fileReadList.get(2)の金額をLong型に変換
 					Long readValue = Long.parseLong(fileReadList.get(2));
-
-//					//支店または商品に該当がなかった場合
-//					if (mapValue == null || readValue == null) {
-//						System.out.println("<該当ファイル名>の支店コードが不正です");
-//						return;
-//					}
 
 					Long branchValue = branchMapValue + readValue;
 					Long commodityValue = commodityMapValue + readValue;
