@@ -16,7 +16,6 @@ import java.util.Map.Entry;
 
 public class CalculateSales {
 
-
 	public static void main(String[] args) {
 
 		HashMap<String,String> branchNameMap = new HashMap<String,String>() ;
@@ -144,11 +143,6 @@ public class CalculateSales {
 		if(!fileOutput(fileOutputPath,commodityNameMap, commodityMoneyMap )){
 			return ;
 		}
-	}
-
-	private static char[] rcdList(int i) {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
 	}
 
 	//lstファイルの読込み
