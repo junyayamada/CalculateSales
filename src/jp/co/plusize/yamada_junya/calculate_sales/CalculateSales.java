@@ -55,6 +55,7 @@ public class CalculateSales {
 				}
 			}
 
+
 			//連番確認
 			for (int i = 0; i < rcdList.size()-1; i++) {
 				String str1st = rcdList.get(i).getName().substring(0,8);
@@ -94,8 +95,8 @@ public class CalculateSales {
 						return;
 					}
 					//売上ファイルの金額が数値でない場合
-					if (fileReadList.get(2).matches("^[0-9]*$")) {
-						System.out.println(rcdList.get(i).getName() + "のフォーマットが不正です");
+					if (!fileReadList.get(2).matches("^[0-9]*$")) {
+						System.out.println("予期せぬエラーが発生しました");
 						return ;
 					}
 
@@ -145,7 +146,7 @@ public class CalculateSales {
 		}
 	}
 
-	private static char[] rcdFile(int i) {
+	private static char[] rcdList(int i) {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
