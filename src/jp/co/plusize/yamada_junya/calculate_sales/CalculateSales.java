@@ -16,7 +16,7 @@ import java.util.Map.Entry;
 
 public class CalculateSales {
 
-	public static void main(String[] args) {
+	public static void main(String[] args){
 
 		HashMap<String,String> branchNameMap = new HashMap<String,String>() ;
 		HashMap<String,Long> branchMoneyMap = new HashMap<String,Long>() ;
